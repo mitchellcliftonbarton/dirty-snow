@@ -1,0 +1,25 @@
+title: Artists
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  published:
+    status: listed
+    headline: Active Artist List
+    empty: No artists yet
+    type: pages
+    template: artist
+
+  draft:
+    status: draft
+    headline: New Artist (Draft) / Inactive Artist
+    empty: No artist in draft
+    type: pages
+    template: artist

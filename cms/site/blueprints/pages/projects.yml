@@ -1,0 +1,28 @@
+title: Projects
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  published:
+    status: listed
+    headline: Active Projects
+    empty: No projects yet
+    type: pages
+    layout: cardlets
+    template: project
+    text: "Title: {{ page.Title }}"
+    info: "Layout: {{ page.Projectlayout }}"
+
+  draft:
+    status: draft
+    headline: New Project (Draft) / Inactive Project
+    empty: No projects in draft
+    type: pages
+    template: project

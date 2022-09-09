@@ -1,0 +1,21 @@
+title: Info Page
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  info-text:
+    type: fields
+    fields:
+      infoText:
+        label: Info text
+        type: textarea
+        buttons: false
+        size: large
+

@@ -1,0 +1,36 @@
+Title: Project 1
+
+----
+
+Projectlayout: Carousel
+
+----
+
+Projectdate: 2020-01-01
+
+----
+
+Projectdescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+----
+
+Projectcategories: categories/category-6, categories/category-8, categories/category-4, categories/category-1
+
+----
+
+Projectartists: artists/artist-1, artists/artist-2
+
+----
+
+Featuredimage:
+
+- screen-shot-2022-09-09-at-1.18.50-am.png
+- screen-shot-2022-09-09-at-1.19.59-am.png
+
+----
+
+Projectimages:
+
+- screen-shot-2022-09-09-at-1.20.17-am.png
+- screen-shot-2022-09-09-at-1.20.32-am.png
+- screen-shot-2022-09-09-at-1.20.48-am.png

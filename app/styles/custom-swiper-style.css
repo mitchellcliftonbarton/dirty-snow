@@ -1,0 +1,21 @@
+
+#project-main {
+    width: calc(100% - 275px);
+}
+
+
+.swiper {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.swiper-slide {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    width: 90% !important;
+}
+
+.swiper-slide-next img {
+    /*height: 75% !important;*/
+}

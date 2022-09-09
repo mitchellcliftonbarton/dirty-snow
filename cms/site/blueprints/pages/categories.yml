@@ -1,0 +1,25 @@
+title: Project Categories
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  published:
+    status: listed
+    headline: Active Category List
+    empty: No active categories yet
+    type: pages
+    template: category
+
+  draft:
+    status: draft
+    headline: New Category (Draft) / Inactive Categories
+    empty: No categories in draft / inactive
+    type: pages
+    template: category

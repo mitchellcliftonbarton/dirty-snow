@@ -1,0 +1,21 @@
+title: Artists
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  featured-categories:
+    type: fields
+    fields:
+      featuredCategories:
+        label: Featured Categoriess
+        type: checkboxes
+        columns: 3
+        options: query
+        query: site.find("categories").children

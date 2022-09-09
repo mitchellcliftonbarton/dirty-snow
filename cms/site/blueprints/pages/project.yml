@@ -1,0 +1,61 @@
+title: Project
+
+options:
+  changeStatus: true
+  changeSlug: true
+  changeTemplate: false
+  changeTitle: true
+  create: true
+  delete: true
+  duplicate: true
+
+columns:
+  - width: 1/2
+    sections:
+      project-info-column-1:
+        type: fields
+        fields:
+          projectLayout:
+            label: Layout Type
+            type: select
+            default: Carousel
+            required: true
+            options:
+              - Carousel
+              - Grid
+          projectDate:
+            label: Date
+            type: date
+            display: MM / YYYY
+          projectDescription:
+            label: Project Description
+            type: textarea
+            buttons: false
+            size: small
+          projectCategories:
+            label: Categories
+            type: multiselect
+            options: query
+            query: site.find("categories").children
+          projectArtists:
+            label: Artists
+            type: multiselect
+            options: query
+            query: site.find("artists").children
+
+
+  - width: 1/2
+    sections:
+      project-info-column-2:
+        type: fields
+        fields:
+          featuredImage:
+            type: files
+            label: Featured Image
+            multiple: true
+            max: 2
+            layout: cards
+          projectImages:
+            label: Project Images
+            type: files
+            layout: cards

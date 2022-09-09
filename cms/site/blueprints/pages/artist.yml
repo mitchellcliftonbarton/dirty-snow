@@ -1,0 +1,36 @@
+title: Artist
+
+options:
+  changeStatus: true
+  changeSlug: true
+  changeTemplate: false
+  changeTitle: true
+  create: true
+  delete: true
+  duplicate: true
+
+columns:
+  - width: 1/2
+    sections:
+      artist-info:
+        type: fields
+        fields:
+          artistName:
+            type: text
+            label: Artist Name
+          artistImage:
+            type: files
+            label: Artist Image (optional)
+            layout: cardlets
+            multiple: false
+
+  - width: 1/2
+    sections:
+      artist-bio:
+        type: fields
+        fields:
+          artistBio:
+            label: Artist Bio
+            type: textarea
+            buttons: false
+            size: medium
