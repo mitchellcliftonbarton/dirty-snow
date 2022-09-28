@@ -6,7 +6,7 @@ import SideNav from "../../components/SideNav";
 import ProjectsList from '../../components/ProjectsList'
 
 export default function CategoryDetail({ content, categories, artists, projects }) {
-    console.log(content, projects)
+    // console.log(content, projects)
     return (
         <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
             <Head>

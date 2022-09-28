@@ -30,6 +30,7 @@ export default function HomePage({content}) {
                             <Image 
                                 src={category?.images[0]?.url}
                                 layout="fill"
+                                objectFit="cover"
                                 priority
                             />
                         </a>

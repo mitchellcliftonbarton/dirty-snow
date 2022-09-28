@@ -1,57 +1,48 @@
 import Head from "next/head";
-import TopNav from "../../components/MainNav";
+
+// Components
+import DefaultLayout from '../../components/layouts/DefaultLayout'
 import SideNav from "../../components/SideNav";
-import TwoUpProjectCard from "../../components/TwoUpProjectCard";
-import FullWidthProjectCard from "../../components/FullWidthProjectCard";
+import ProjectsList from '../../components/ProjectsList'
 
-export default function ProjectPost({content, categories, artists, projects}) {
+export default function ArtistDetail({ content, categories, artists, projects }) {
+    // console.log(content, projects)
     return (
-        <div className="mx-3">
-            <div className="cursor-pointer absolute right-0" onClick={() => {
-                console.log(content);
-                console.log(categories);
-                console.log(artists);
-                console.log(projects);
-            }}>LOG CONTENT
-            </div>
-
+        <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
             <Head>
-                <title>DS : {content?.content?.artistname?.toUpperCase()}</title>
+                <title>DIRTY SNOW | {content.content.artistname.toUpperCase()}</title>
             </Head>
 
-            <TopNav />
+            <SideNav 
+                categories={categories} 
+                artists={artists} 
+                selectedPage={content?.content?.artistname}
+            />
 
-            <div className="flex mt-[15px] mb-28">
-                <div className="mr-16 sm:mr-24 md:mr-32 lg:mr-40">
-                    <SideNav categories={categories} artists={artists} selectedPage={content?.content?.artistname} />
-                </div>
-                <div className="flex flex-wrap flex-col">
-                    {projects?.map((project, index) => {
-                        if (index % 2 === 0) {
-                            return (
-                                <div className={`${index > 0 ? 'mt-24' : ''}`} key={index}>
-                                    <FullWidthProjectCard project={project} />
-                                </div>
-                            )
-                        } else {
-                            return (
-                                <div className={`${index > 0 ? 'mt-24' : ''}`} key={index}>
-                                    <TwoUpProjectCard project={project} />
-                                </div>
-                            )
-                        }
-                    })}
-                </div>
+            <div className="col-span-9">
+                {projects.length > 0 ? (
+                    <ProjectsList projects={projects} />
+                ) : (
+                    <p>There are no projects by this artist.</p>
+                )}
             </div>
         </div>
     );
 }
 
+ArtistDetail.getLayout = function getLayout(page) {
+  return (
+    <DefaultLayout>
+      {page}
+    </DefaultLayout>
+  )
+}
+
 export async function getStaticPaths() {
-    const response = await fetch("http://localhost:8888/api/query", {
+    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -84,10 +75,10 @@ export async function getStaticProps(context) {
     const {params} = context;
 
     //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch("http://localhost:8888/api/query", {
+    const artistsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -115,10 +106,10 @@ export async function getStaticProps(context) {
     )[0];
 
     //GET ALL CATEGORIES' DATA
-    const categoriesResponse = await fetch("http://localhost:8888/api/query", {
+    const categoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -140,10 +131,10 @@ export async function getStaticProps(context) {
     const categoryListData = categoriesJsonData.result.data
 
     //GET ALL PROJECTS' DATA
-    const projectsResponse = await fetch("http://localhost:8888/api/query", {
+    const projectsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",

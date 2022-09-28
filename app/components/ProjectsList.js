@@ -38,6 +38,7 @@ export default function ProjectsList({projects}) {
                     <Image 
                       src={project?.featureImages[0]?.url}
                       layout="fill"
+                      objectFit='cover'
                       priority={index < 3 ? true : false}
                     />
                   </div>
@@ -72,6 +73,7 @@ export default function ProjectsList({projects}) {
                     <Image 
                       src={project?.featureImages[0]?.url}
                       layout="fill"
+                      objectFit='cover'
                       priority={index < 3 ? true : false}
                     />
                   </div>

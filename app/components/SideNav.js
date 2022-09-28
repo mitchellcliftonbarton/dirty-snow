@@ -34,7 +34,7 @@ export default function SideNav({categories, artists, selectedPage}) {
                         const artistSLUG = artist?.url.slice(artist?.url.lastIndexOf("/"))
                         return (
                             <Link key={artistSLUG} href={`/artists${artistSLUG}`}>
-                                <p className={`cursor-pointer w-fit lg:hover:underline lg:hover:italic ${selectedPage === artist?.content?.artistname ? 'underline italic' : ''}`}>{artist?.content?.artistname}</p>
+                                <a className={`cursor-pointer w-fit lg:hover:underline lg:hover:italic ${selectedPage === artist?.content?.artistname ? 'underline italic' : ''}`}>{artist?.content?.artistname}</a>
                             </Link>
                         )
                     })
