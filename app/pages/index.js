@@ -1,40 +1,59 @@
 import Head from "next/head";
-import TopNav from "../components/TopNav";
+
+// Components
+import DefaultLayout from '../components/layouts/DefaultLayout'
 import Link from "next/link";
+import Image from 'next/image'
 
 export default function HomePage({content}) {
-    const randomCategoryArray = content?.activeHomeCategoryData?.sort(() => Math.random() - 0.5)
+    const { activeHomeCategoryData } = content
+    console.log(content)
+
     return (
-        <div className="m-3 pb-10">
-            <div className="cursor-pointer absolute right-0" onClick={() => {console.log(content)}}>LOG CONTENT</div>
+        <div className="py-32 px-def grid grid-cols-5 gap-def-1/2 w-full">
             <Head>
-                <title>DIRTY SNOW</title>
+                <title>DIRTY SNOW | Home</title>
             </Head>
 
-            <TopNav />
+            {activeHomeCategoryData.map(category => {
+                const categorySLUG = category?.url.slice(category?.url.lastIndexOf("/"))
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 mt-[90px]">
-                {randomCategoryArray.map(category => {
-                    const categorySLUG = category?.url.slice(category?.url.lastIndexOf("/"))
-                    return (
-                        <Link key={categorySLUG} href={`/categories${categorySLUG}`}>
-                            <div className="mx-auto cursor-pointer">
-                                <img className="w-full h-full sm:h-[250px] object-fit" src={category?.images[0]?.url} />
-                            </div>
-                        </Link>
-                    )
-                })}
-            </div>
+                return (
+                    <Link 
+                        key={categorySLUG} 
+                        href={`/categories${categorySLUG}`}
+                    >
+                        <a 
+                            className="inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer" 
+                            style={{ paddingBottom: '65%' }}
+                        >
+                            <Image 
+                                src={category?.images[0]?.url}
+                                layout="fill"
+                                priority
+                            />
+                        </a>
+                    </Link>
+                )
+            })}
         </div>
     )
 }
 
+HomePage.getLayout = function getLayout(page) {
+  return (
+    <DefaultLayout>
+      {page}
+    </DefaultLayout>
+  )
+}
+
 
 export async function getStaticProps() {
-    const homeCategoriesResponse = await fetch("http://localhost:8888/api/query", {
+    const homeCategoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('home')",
@@ -45,12 +64,13 @@ export async function getStaticProps() {
     });
 
     const jsonData1 = await homeCategoriesResponse.json();
+    
     const homeCategories = jsonData1.result.content.featuredcategories.split(",").map(category => category.slice(category.lastIndexOf('/')));
 
-    const categoryListResponse = await fetch("http://localhost:8888/api/query", {
+    const categoryListResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -63,6 +83,9 @@ export async function getStaticProps() {
                         url: true,
                         filename: true,
                         content: true,
+                        width: true,
+                        height: true,
+                        alt: true
                     },
                 },
             },
@@ -76,6 +99,8 @@ export async function getStaticProps() {
         const categorySLUG = category.url.slice(category.url.lastIndexOf('/'));
         return homeCategories.includes(categorySLUG);
     })
+
+    activeHomeCategoryData.sort(() => Math.random() - 0.5)
 
     activeHomeCategoryData = {
         title: jsonData1.result.content.title,

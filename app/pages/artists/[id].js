@@ -1,5 +1,5 @@
 import Head from "next/head";
-import TopNav from "../../components/TopNav";
+import TopNav from "../../components/MainNav";
 import SideNav from "../../components/SideNav";
 import TwoUpProjectCard from "../../components/TwoUpProjectCard";
 import FullWidthProjectCard from "../../components/FullWidthProjectCard";

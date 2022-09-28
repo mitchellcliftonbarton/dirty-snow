@@ -1,27 +1,34 @@
 import Head from "next/head";
-import TopNav from "../../components/TopNav";
+
+// Components
+import DefaultLayout from '../components/layouts/DefaultLayout'
 
 export default function InfoPage({content}) {
     return (
-        <div className="mx-3">
-            <div className="cursor-pointer absolute right-0" onClick={() => {console.log(content)}}>LOG CONTENT</div>
+        <div className="py-32 px-def">
             <Head>
-                <title>DS: INFO</title>
+                <title>DIRTY SNOW | Info</title>
             </Head>
-            <TopNav />
-            <div className="flex justify-center mt-[90px]">
-                <p className="w-4/5">{content.infotext}</p>
-            </div>
+        
+            <div className="w-full lg:w-2/3">{content.infotext}</div>
         </div>
     )
 }
 
+InfoPage.getLayout = function getLayout(page) {
+  return (
+    <DefaultLayout>
+      {page}
+    </DefaultLayout>
+  )
+}
+
 
 export async function getStaticProps() {
-    const infoDataResponse = await fetch("http://localhost:8888/api/query", {
+    const infoDataResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('info')",

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import TopNav from "../../components/TopNav";
+import TopNav from "../../components/MainNav";
 
 export default function ProjectsPage({content}) {
     return (
