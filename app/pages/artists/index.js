@@ -29,6 +29,7 @@ export default function ArtistList({ content }) {
                                     src={artist?.images[0]?.url}
                                     layout="fill"
                                     objectFit="cover"
+                                    alt={`Image of ${artist.content.title}`}
                                     priority
                                 />
                             )}

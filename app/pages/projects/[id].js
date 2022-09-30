@@ -1,12 +1,17 @@
 import Head from "next/head";
-import TopNav from "../../components/MainNav";
+
+// Components
+import DefaultLayout from '../../components/layouts/DefaultLayout'
 import SideNav from "../../components/SideNav";
+import Image from 'next/image'
+
+// Other
 import {Swiper, SwiperSlide} from "swiper/react";
-import {Pagination, Navigation} from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import {useCallback, useRef} from "react";
+import {useCallback, useRef, useState} from "react";
+import GridImage from "../../components/GridImage";
 
 export default function ProjectPost({content, categories, artists, metadata}) {
 
@@ -21,18 +26,64 @@ export default function ProjectPost({content, categories, artists, metadata}) {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slideNext();
     }, []);
+    
+    const images = content.images.map((obj, index) => {
+        let imagePosition = 'top-left'
+        let isRightSide = false
+        let isBottom = false
+        let index1 = index + 1
+        let index2 = index + 2
+
+        let total = content.images.length
+        let totalRows = Math.ceil(total / 5)
+        let currentRow = Math.ceil((index + 1) / 5)
+
+        if (currentRow === totalRows) {
+            isBottom = true
+        }
+
+        if (index2 % 5 === 0) {
+            isRightSide = true
+        }
+
+        if (index1 % 5 === 0) {
+            isRightSide = true
+        }
+
+        if (isRightSide && !isBottom) {
+            imagePosition = 'top-right'
+        } else if (!isRightSide && isBottom) {
+            imagePosition = 'bottom-left'
+        } else if (isRightSide && isBottom) {
+            imagePosition = 'bottom-right'
+        }
+
+        let zIndexVal = 1
+
+        return {...obj, expanded: false, imagePosition, zIndexVal}
+    })
+    const [gridImages, setGridImages] = useState(images)
+    
+    const setImage = (index, value) => {
+        images.forEach(image => {
+            image.expanded = false
+            image.zIndexVal = 1
+        })
+        images[index].expanded = value
+        images[index].zIndexVal = 10
+
+        setGridImages([...images]) // have to spread it in so its passing in a new array, otherwise state wont update UI
+    }
 
     function renderImages() {
         switch (content?.content?.projectlayout) {
             case "Grid":
                 return (
                     //TODO BUILD ACTUAL GRID LAYOUT WITH EXPANDABLE IMAGES
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 mt-10">
-                        {content?.images?.map(image => {
+                    <div className="grid grid-cols-5 gap-1 pr-20">
+                        {gridImages?.map((image, index) => {
                             return (
-                                <>
-                                    <img src={image.url} />
-                                </>
+                                <GridImage image={image} setImage={setImage} index={index} key={index} alt={`Image from ${content.content.title}`} />
                             )
                         })}
                     </div>
@@ -40,28 +91,55 @@ export default function ProjectPost({content, categories, artists, metadata}) {
             case "Carousel":
                 return (
                     <>
-                        <div className="flex justify-center w-full max-h-[500px] mt-9">
-                            <div className="w-full">
-                                <Swiper
-                                    ref={sliderRef}
-                                    slidesPerView={"auto"}
-                                    spaceBetween={50}
-                                    loop={true}>
-                                    {content?.images?.map((image, index) => {
-                                        return (
-                                            <SwiperSlide className="" key={index}>
-                                                <div className="flex h-full w-full items-center">
-                                                    <img className="max-h-full max-w-full" src={image?.url} />
-                                                </div>
-                                            </SwiperSlide>)
-                                    })}
-                                </Swiper>
+                        <div className="flex justify-center w-full">
+                            <div className="w-full relative" style={{ paddingBottom: '45%' }}>
+                                <div className="absolute top-0 left-0 w-full h-full">
+                                    <Swiper
+                                        ref={sliderRef}
+                                        slidesPerView={1.5}
+                                        spaceBetween={100}
+                                        loop={true}
+                                        style={{
+                                            position: 'absolute',
+                                            left: '0px',
+                                            top: '0px',
+                                            width: '100%',
+                                            height: '100%'
+                                        }}
+                                    >
+                                        {content?.images?.map((image, index) => {
+                                            return (
+                                                <SwiperSlide className="" key={index}>
+                                                    <div className="flex h-full w-full items-center">
+                                                        <Image 
+                                                            src={image.url}
+                                                            className="max-h-full max-w-full"
+                                                            width={image.width}
+                                                            height={image.height}
+                                                            alt={`Image from ${content.content.title}`}
+                                                            priority={index < 2 ? true : false}
+                                                        />
+                                                    </div>
+                                                </SwiperSlide>)
+                                        })}
+                                    </Swiper>
+                                </div>
                             </div>
                         </div>
-                        {/*custom swiper navigation arrows (next and prev image buttons)*/}
+
                         <div className="flex justify-between mt-4">
-                            <div onClick={handlePrev} className="p-2 cursor-pointer"><img src="/left-arrow.png" /></div>
-                            <div onClick={handleNext} className="p-2 cursor-pointer mr-10"><img src="/right-arrow.png" /></div>
+                            <div onClick={handlePrev} className="p-2 cursor-pointer">
+                                <svg width="165" height="14" viewBox="0 0 165 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 7L5 9.88675L5 4.11325L0 7ZM4.5 7.5L165 7.50001L165 6.50001L4.5 6.5L4.5 7.5Z" fill="black"/>
+                                <path d="M0 7L9.75 0.937822V13.0622L0 7Z" fill="black"/>
+                                </svg>
+                            </div>
+                            <div onClick={handleNext} className="p-2 cursor-pointer mr-10">
+                                <svg width="165" height="14" viewBox="0 0 165 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M165 7.00001L160 4.11326L160 9.88677L165 7.00001ZM-4.37114e-08 7.5L160.5 7.50001L160.5 6.50001L4.37114e-08 6.5L-4.37114e-08 7.5Z" fill="black"/>
+                                <path d="M165 7L155.25 13.0622V0.937822L165 7Z" fill="black"/>
+                                </svg>
+                            </div>
                         </div>
                     </>
                 )
@@ -69,33 +147,20 @@ export default function ProjectPost({content, categories, artists, metadata}) {
     }
 
     return (
-        <div className="ml-3">
-            <div className="cursor-pointer absolute right-0" onClick={() => {
-                console.log(content);
-                console.log(categories);
-                console.log(artists);
-                console.log(metadata);
-            }}>LOG CONTENT
-            </div>
-
+        <div className="pt-20 pb-32 grid grid-cols-12 gap-def pl-def">
             <Head>
-                <title>DS : {content?.content?.title?.toUpperCase()}</title>
+                <title>DS | {content?.content?.title?.toUpperCase()}</title>
             </Head>
 
-            <TopNav />
+            <SideNav 
+                categories={categories} 
+                artists={artists} 
+                selectedPage={content?.content?.categoryname}
+            />
 
-            {/*MAIN*/}
-            <div className="flex pt-4 pb-28 w-full h-full">
-
-                {/*side nav*/}
-                <div id="side-nav">
-                    <SideNav categories={categories} artists={artists} />
-                </div>
-
-                {/*PROJECT MAIN*/}
+            <div className="col-span-9">
                 <div id="project-main">
-                    {/*project title | year | artists*/}
-                    <div className="border-b border-black pb-2 mr-10">
+                    <div className="border-b border-black pb-2 mr-def">
                         <span className="text-3xl">{content?.content?.title} </span>
                         {
                             metadata?.contributors?.map((contributor, index) => {
@@ -106,23 +171,28 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                         }
                     </div>
 
-                    {/*project description*/}
-                    <p className="pt-2 mr-10">{content?.content?.projectdescription}</p>
+                    <p className="pt-2 pr-10 mb-8">{content?.content?.projectdescription}</p>
 
-                    {/*display project images*/}
                     {renderImages()}
-
                 </div>
             </div>
         </div>
     );
 }
 
+ProjectPost.getLayout = function getLayout(page) {
+  return (
+    <DefaultLayout>
+      {page}
+    </DefaultLayout>
+  )
+}
+
 export async function getStaticPaths() {
-    const response = await fetch("http://localhost:8888/api/query", {
+    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",
@@ -154,10 +224,10 @@ export async function getStaticProps(context) {
     const {params} = context;
 
     //GET ALL PROJECTS' DATA
-    const projectsResponse = await fetch("http://localhost:8888/api/query", {
+    const projectsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",
@@ -170,6 +240,8 @@ export async function getStaticProps(context) {
                         url: true,
                         filename: true,
                         content: true,
+                        width: true,
+                        height: true
                     },
                 },
             },
@@ -185,10 +257,10 @@ export async function getStaticProps(context) {
     );
 
     //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch("http://localhost:8888/api/query", {
+    const artistsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -201,6 +273,8 @@ export async function getStaticProps(context) {
                         url: true,
                         filename: true,
                         content: true,
+                        width: true,
+                        height: true
                     },
                 },
             },
@@ -210,10 +284,10 @@ export async function getStaticProps(context) {
     let artistsListData = artistsJsonData.result.data
 
     //GET ALL CATEGORIES' DATA
-    const categoriesResponse = await fetch("http://localhost:8888/api/query", {
+    const categoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -226,6 +300,8 @@ export async function getStaticProps(context) {
                         url: true,
                         filename: true,
                         content: true,
+                        width: true,
+                        height: true
                     },
                 },
             },

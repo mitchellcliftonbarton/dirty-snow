@@ -1,25 +1,58 @@
 import Head from "next/head";
-import TopNav from "../../components/MainNav";
 
-export default function ProjectsPage({content}) {
+// Components
+import DefaultLayout from '../../components/layouts/DefaultLayout'
+import Link from "next/link";
+import Image from 'next/image'
+
+export default function ProjectsList({ content }) {
     return (
-        <>
-            <div className="cursor-pointer absolute right-0" onClick={() => {console.log(content)}}>LOG CONTENT</div>
+        <div className="py-32 px-def grid grid-cols-5 gap-def-1/2 w-full">
             <Head>
-                <title>DS : PROJECTS</title>
+                <title>DIRTY SNOW | PROJECTS</title>
             </Head>
-            <TopNav />
-            <h1>Projects</h1>
-        </>
+
+            {content.map(project => {
+                const projectSLUG = project?.url.slice(project?.url.lastIndexOf("/"))
+
+                return (
+                    <Link 
+                        key={projectSLUG} 
+                        href={`/projects${projectSLUG}`}
+                    >
+                        <a 
+                            className="inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer" 
+                            style={{ paddingBottom: '65%' }}
+                        >
+                            <Image 
+                                src={project?.images[0]?.url}
+                                layout="fill"
+                                objectFit="cover"
+                                alt={`Image of ${project.content.title}`}
+                                priority
+                            />
+                        </a>
+                    </Link>
+                )
+            })}
+        </div>
     );
+}
+
+ProjectsList.getLayout = function getLayout(page) {
+  return (
+    <DefaultLayout>
+      {page}
+    </DefaultLayout>
+  )
 }
 
 
 export async function getStaticProps() {
-    const response = await fetch("http://localhost:8888/api/query", {
+    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
         method: "POST",
         headers: {
-            Authorization: "Basic anJmcmFtcHRvbjEzQGdtYWlsLmNvbTpQYXNzd29yZDE=",
+            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",

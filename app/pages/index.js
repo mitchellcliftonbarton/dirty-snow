@@ -31,6 +31,7 @@ export default function HomePage({content}) {
                                 src={category?.images[0]?.url}
                                 layout="fill"
                                 objectFit="cover"
+                                alt={`Image for ${category.content.title}`}
                                 priority
                             />
                         </a>

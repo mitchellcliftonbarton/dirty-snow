@@ -13,7 +13,7 @@ export default function ProjectsList({projects}) {
         
         if (index % 3 === 0) {
           return (
-            <Link href={`/projects${projectSLUG}`}>
+            <Link href={`/projects${projectSLUG}`} key={index}>
               <a className="w-full mb-32 pr-40 lg:hover:opacity-50 transition-opacity duration-300">
                 <div className="flex items-end mb-3">
                   <h2 className="text-3xl whitespace-nowrap uppercase">{project?.project?.content?.title}</h2>
@@ -39,6 +39,7 @@ export default function ProjectsList({projects}) {
                       src={project?.featureImages[0]?.url}
                       layout="fill"
                       objectFit='cover'
+                      alt={`Image for ${project.project.content.title}`}
                       priority={index < 3 ? true : false}
                     />
                   </div>
@@ -48,7 +49,7 @@ export default function ProjectsList({projects}) {
           )
         } else {
           return (
-            <Link href={`/projects${projectSLUG}`}>
+            <Link href={`/projects${projectSLUG}`} key={index}>
               <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
                 <div className="flex items-end mb-3">
                   <h2 className="text-3xl whitespace-nowrap uppercase">{project?.project?.content?.title}</h2>
@@ -74,6 +75,7 @@ export default function ProjectsList({projects}) {
                       src={project?.featureImages[0]?.url}
                       layout="fill"
                       objectFit='cover'
+                      alt={`Image for ${project.project.content.title}`}
                       priority={index < 3 ? true : false}
                     />
                   </div>

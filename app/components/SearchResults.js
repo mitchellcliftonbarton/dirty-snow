@@ -11,49 +11,81 @@ export default function ProjectsList({results}) {
       {results.map((result, index) => {
         switch (result.type) {
           case 'project':
-            const projectSLUG = result.url.slice(result.url.lastIndexOf("/"))
-
             return (
-              <Link href={`/projects${projectSLUG}`}>
+              <Link 
+                href={`/projects${result.slug}`} 
+                key={index}
+              >
                 <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
                   <div className="flex items-end mb-3">
                     <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
-                    {/* <span className="ml-6">
-                      {project?.contributors?.map((contributor, index) => {
-                        return (
-                          <span 
-                            className="text-sm uppercase" 
-                            key={`full-width-card-${index}`}
-                          >
-                            {contributor?.content?.artistname}{index === (project?.contributors.length - 1) ? "" : " | "}
-                          </span>
-                        )
-                      })}
-                    </span> */}
                   </div>
 
-                  {/* <div className="relative">
-                    <p className={`${styles.year} absolute top-0 left-0 leading-4`}>{project?.project?.content?.projectdate.slice(0, 4)}&nbsp;</p>
+                  <div className="relative">
+                    <p className={`${styles.year} absolute top-0 left-0 leading-4`}>{result.date.slice(0, 4)}&nbsp;</p>
 
                     <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
                       <Image 
-                        src={project?.featureImages[0]?.url}
+                        src={result.image}
                         layout="fill"
                         objectFit='cover'
+                        alt={`Image for ${result.title}`}
                         priority={index < 3 ? true : false}
                       />
                     </div>
-                  </div> */}
+                  </div>
                 </a>
               </Link>
             )
           case 'category':
             return (
-              <p>Category: {result.title}</p>
+              <Link 
+                href={`/categories${result.slug}`} 
+                key={index}
+              >
+                <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+                  <div className="flex items-end mb-3">
+                    <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                  </div>
+
+                  <div className="relative">
+                    <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                      <Image 
+                        src={result.image}
+                        layout="fill"
+                        objectFit='cover'
+                        alt={`Image for ${result.title}`}
+                        priority={index < 3 ? true : false}
+                      />
+                    </div>
+                  </div>
+                </a>
+              </Link>
             )
           case 'artist':
             return (
-              <p>Artist: {result.title}</p>
+              <Link 
+                href={`/artists${result.slug}`} 
+                key={index}
+              >
+                <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+                  <div className="flex items-end mb-3">
+                    <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                  </div>
+
+                  <div className="relative">
+                    <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                      <Image 
+                        src={result.image}
+                        layout="fill"
+                        objectFit='cover'
+                        alt={`Image for ${result.title}`}
+                        priority={index < 3 ? true : false}
+                      />
+                    </div>
+                  </div>
+                </a>
+              </Link>
             )
         }
       })}

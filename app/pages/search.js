@@ -13,11 +13,11 @@ export default function SearchPage({ categories, artists, projects, allData }) {
   const router = useRouter()
   const searchTerm = router.query.q
 
-  // console.log(router, searchTerm)
-
   const results = allData.filter(item => {
     return item.searchableContent.includes(searchTerm)
   })
+
+  console.log(results)
 
     return (
         <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
@@ -32,6 +32,7 @@ export default function SearchPage({ categories, artists, projects, allData }) {
             />
         
             <div className="col-span-9">
+                <h2 className="mb-12">Search results for &ldquo;{searchTerm}&rdquo;</h2>
                 {results.length > 0 ? (
                     <SearchResults results={results} />
                 ) : (
@@ -141,7 +142,8 @@ export async function getStaticProps(context) {
       name: category.content.categoryname,
       searchableContent: `${category.content.title} ${category.content.categoryname} ${category.content.categorydescription} category`,
       type: 'category',
-      slug: category.url
+      slug: category.url.slice(category.url.lastIndexOf("/")),
+      image: category.images[0].url
     }
 
     allData.push(obj)
@@ -151,9 +153,10 @@ export async function getStaticProps(context) {
     const obj = {
       title: artist.content.title,
       name: artist.content.artistname,
-      searchableContent: `${artist.content.title} ${artist.content.categoryname} ${artist.content.artistbio}artist`,
+      searchableContent: `${artist.content.title} ${artist.content.categoryname} ${artist.content.artistbio} artist`,
       type: 'artist',
-      slug: artist.url
+      slug: artist.url.slice(artist.url.lastIndexOf("/")),
+      image: artist.images[0].url
     }
 
     allData.push(obj)
@@ -177,10 +180,14 @@ export async function getStaticProps(context) {
       name: project.content.title,
       searchableContent: `${project.content.title} ${catsString.toLowerCase()} ${artistsString.toLowerCase()}`,
       type: 'project',
-      slug: project.content.url
+      slug: project.url.slice(project.url.lastIndexOf("/")),
+      image: project.images[0].url ? project.images[0].url : false,
+      date: project.content.projectdate
     }
 
     allData.push(obj)
+
+    // console.log(project)
   })
 
   // const results = allData.filter(item => {

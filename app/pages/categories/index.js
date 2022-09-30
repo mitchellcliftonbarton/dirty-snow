@@ -28,6 +28,7 @@ export default function CategoryList({ content }) {
                                 src={category?.images[0]?.url}
                                 layout="fill"
                                 objectFit="cover"
+                                alt={`Image of ${category.content.title}`}
                                 priority
                             />
                         </a>
