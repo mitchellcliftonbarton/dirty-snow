@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['dirty-snow-panel.local.com'],
+    domains: ['dirty-snow-panel.local.com', 'dirty-snow-admin.hot-rice.com'],
   },
 }
 
