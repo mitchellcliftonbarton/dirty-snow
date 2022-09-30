@@ -1,5 +1,6 @@
 // Styles
 import styles from '../styles/ProjectsList.module.scss'
+import imageStyles from '../styles/Image.module.scss'
 
 // Components
 import Link from "next/link"
@@ -24,14 +25,18 @@ export default function ProjectsList({results}) {
                   <div className="relative">
                     <p className={`${styles.year} absolute top-0 left-0 leading-4`}>{result.date.slice(0, 4)}&nbsp;</p>
 
-                    <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
-                      <Image 
-                        src={result.image}
-                        layout="fill"
-                        objectFit='cover'
-                        alt={`Image for ${result.title}`}
-                        priority={index < 3 ? true : false}
-                      />
+                    <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
+                      {result.image ? (
+                        <Image 
+                          src={result.image}
+                          layout="fill"
+                          objectFit='cover'
+                          alt={`Image for ${result.title}`}
+                          priority={index < 3 ? true : false}
+                        />
+                      ) : (
+                        <div className="absolute top-0 left-0 w-full h-full bg-slate-300"></div>
+                      )}
                     </div>
                   </div>
                 </a>
@@ -49,7 +54,7 @@ export default function ProjectsList({results}) {
                   </div>
 
                   <div className="relative">
-                    <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                    <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
                       <Image 
                         src={result.image}
                         layout="fill"
@@ -74,7 +79,7 @@ export default function ProjectsList({results}) {
                   </div>
 
                   <div className="relative">
-                    <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                    <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
                       <Image 
                         src={result.image}
                         layout="fill"

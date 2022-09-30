@@ -9,7 +9,6 @@ import SearchResults from '../components/SearchResults'
 import SideNav from "../components/SideNav";
 
 export default function SearchPage({ categories, artists, projects, allData }) {
-  // console.log(artists, projects, results)
   const router = useRouter()
   const searchTerm = router.query.q
 
@@ -17,30 +16,28 @@ export default function SearchPage({ categories, artists, projects, allData }) {
     return item.searchableContent.includes(searchTerm)
   })
 
-  console.log(results)
+  return (
+      <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
+          <Head>
+              <title>DIRTY SNOW | Search</title>
+          </Head>
 
-    return (
-        <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
-            <Head>
-                <title>DIRTY SNOW | Search</title>
-            </Head>
-
-            <SideNav 
-                categories={categories} 
-                artists={artists} 
-                selectedPage={false}
-            />
-        
-            <div className="col-span-9">
-                <h2 className="mb-12">Search results for &ldquo;{searchTerm}&rdquo;</h2>
-                {results.length > 0 ? (
-                    <SearchResults results={results} />
-                ) : (
-                    <p>No results for {searchTerm}.</p>
-                )}
-            </div>
-        </div>
-    );
+          <SideNav 
+              categories={categories} 
+              artists={artists} 
+              selectedPage={false}
+          />
+      
+          <div className="col-span-9">
+              <h2 className="mb-12">Search results for &ldquo;{searchTerm}&rdquo;</h2>
+              {results.length > 0 ? (
+                  <SearchResults results={results} />
+              ) : (
+                  <p>No results for {searchTerm}.</p>
+              )}
+          </div>
+      </div>
+  );
 }
 
 SearchPage.getLayout = function getLayout(page) {
@@ -53,15 +50,15 @@ SearchPage.getLayout = function getLayout(page) {
 
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps(context) {
-  const { params } = context;
+    const { params } = context;
   
-  console.log(params)
+    // console.log(params)
   
     //GET ALL CATEGORIES' DATA
-    const categoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const categoriesResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -83,10 +80,10 @@ export async function getStaticProps(context) {
     const categoryListData = categoriesJsonData.result.data
 
     //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const artistsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -108,10 +105,10 @@ export async function getStaticProps(context) {
     let artistsListData = artistsJsonData.result.data
 
     //GET ALL PROJECTS' DATA
-    const projectsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",
@@ -139,11 +136,10 @@ export async function getStaticProps(context) {
   categoryListData.forEach(category => {
     const obj = {
       title: category.content.title,
-      name: category.content.categoryname,
-      searchableContent: `${category.content.title} ${category.content.categoryname} ${category.content.categorydescription} category`,
+      searchableContent: `${category.content.title} ${category.content.categorydescription} category`,
       type: 'category',
       slug: category.url.slice(category.url.lastIndexOf("/")),
-      image: category.images[0].url
+      image: category.images.length > 0 ? category.images[0].url : false
     }
 
     allData.push(obj)
@@ -152,11 +148,10 @@ export async function getStaticProps(context) {
   artistsListData.forEach(artist => {
     const obj = {
       title: artist.content.title,
-      name: artist.content.artistname,
-      searchableContent: `${artist.content.title} ${artist.content.categoryname} ${artist.content.artistbio} artist`,
+      searchableContent: `${artist.content.title} ${artist.content.artistbio} artist`,
       type: 'artist',
       slug: artist.url.slice(artist.url.lastIndexOf("/")),
-      image: artist.images[0].url
+      image: artist.images.length > 0 ? artist.images[0].url : false
     }
 
     allData.push(obj)
@@ -186,13 +181,7 @@ export async function getStaticProps(context) {
     }
 
     allData.push(obj)
-
-    // console.log(project)
   })
-
-  // const results = allData.filter(item => {
-  //   return item.searchableContent.includes()
-  // })
 
     return {
         // Passed to the page component as props

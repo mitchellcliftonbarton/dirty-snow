@@ -1,3 +1,6 @@
+// Styles
+import styles from '../styles/Image.module.scss'
+
 import Head from "next/head";
 
 // Components
@@ -7,7 +10,6 @@ import Image from 'next/image'
 
 export default function HomePage({content}) {
     const { activeHomeCategoryData } = content
-    console.log(content)
 
     return (
         <div className="py-32 px-def grid grid-cols-5 gap-def-1/2 w-full">
@@ -24,10 +26,10 @@ export default function HomePage({content}) {
                         href={`/categories${categorySLUG}`}
                     >
                         <a 
-                            className="inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer" 
+                            className={`${styles['image-container']} inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer`} 
                             style={{ paddingBottom: '65%' }}
                         >
-                            <Image 
+                            <Image
                                 src={category?.images[0]?.url}
                                 layout="fill"
                                 objectFit="cover"
@@ -52,10 +54,10 @@ HomePage.getLayout = function getLayout(page) {
 
 
 export async function getStaticProps() {
-    const homeCategoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const homeCategoriesResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('home')",
@@ -69,10 +71,10 @@ export async function getStaticProps() {
     
     const homeCategories = jsonData1.result.content.featuredcategories.split(",").map(category => category.slice(category.lastIndexOf('/')));
 
-    const categoryListResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const categoryListResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",

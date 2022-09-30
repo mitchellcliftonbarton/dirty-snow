@@ -1,0 +1,5 @@
+.image-container {
+  & > span {
+    transition: opacity .3s;
+  }
+}

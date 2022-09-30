@@ -1,5 +1,6 @@
 // Styles
 import styles from '../styles/MainNav.module.scss'
+import imageStyles from '../styles/Image.module.scss'
 
 // // Componentns
 import Image from 'next/image'
@@ -18,7 +19,7 @@ const GridImage = ({ image, setImage, index, alt }) => {
         }}
       >
         <div 
-          className="relative" 
+          className={`${imageStyles['image-container']} relative`} 
           style={{ paddingBottom: '133%', backgroundColor: 'rgba(200, 200, 200, .5)' }}
         >
           <Image 

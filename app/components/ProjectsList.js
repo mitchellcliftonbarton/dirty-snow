@@ -1,5 +1,6 @@
 // Styles
 import styles from '../styles/ProjectsList.module.scss'
+import imageStyles from '../styles/Image.module.scss'
 
 // Components
 import Link from "next/link"
@@ -24,7 +25,7 @@ export default function ProjectsList({projects}) {
                           className="text-sm uppercase" 
                           key={`full-width-card-${index}`}
                         >
-                          {contributor?.content?.artistname}{index === (project?.contributors.length - 1) ? "" : " | "}
+                          {contributor?.content?.title}{index === (project?.contributors.length - 1) ? "" : " | "}
                         </span>
                       )
                     })}
@@ -34,7 +35,7 @@ export default function ProjectsList({projects}) {
                 <div className="relative">
                   <p className={`${styles.year} absolute top-0 left-0 leading-4`}>{project?.project?.content?.projectdate.slice(0, 4)}&nbsp;</p>
 
-                  <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                  <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
                     <Image 
                       src={project?.featureImages[0]?.url}
                       layout="fill"
@@ -60,7 +61,7 @@ export default function ProjectsList({projects}) {
                           className="text-sm uppercase" 
                           key={`full-width-card-${index}`}
                         >
-                          {contributor?.content?.artistname}{index === (project?.contributors.length - 1) ? "" : " | "}
+                          {contributor?.content?.title}{index === (project?.contributors.length - 1) ? "" : " | "}
                         </span>
                       )
                     })}
@@ -70,7 +71,7 @@ export default function ProjectsList({projects}) {
                 <div className="relative">
                   <p className={`${styles.year} absolute top-0 left-0 leading-4`}>{project?.project?.content?.projectdate.slice(0, 4)}&nbsp;</p>
 
-                  <div className="image relative border border-black" style={{ paddingBottom: '65%' }}>
+                  <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
                     <Image 
                       src={project?.featureImages[0]?.url}
                       layout="fill"

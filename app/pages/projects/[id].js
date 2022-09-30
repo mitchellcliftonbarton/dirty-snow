@@ -1,5 +1,7 @@
 import Head from "next/head";
 
+import styles from '../../styles/Image.module.scss'
+
 // Components
 import DefaultLayout from '../../components/layouts/DefaultLayout'
 import SideNav from "../../components/SideNav";
@@ -110,7 +112,7 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                                         {content?.images?.map((image, index) => {
                                             return (
                                                 <SwiperSlide className="" key={index}>
-                                                    <div className="flex h-full w-full items-center">
+                                                    <div className={`${styles['image-container']} flex h-full w-full items-center`}>
                                                         <Image 
                                                             src={image.url}
                                                             className="max-h-full max-w-full"
@@ -155,7 +157,7 @@ export default function ProjectPost({content, categories, artists, metadata}) {
             <SideNav 
                 categories={categories} 
                 artists={artists} 
-                selectedPage={content?.content?.categoryname}
+                selectedPage={content?.content?.title}
             />
 
             <div className="col-span-9">
@@ -165,7 +167,7 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                         {
                             metadata?.contributors?.map((contributor, index) => {
                                 return (
-                                    <span className="text-sm" key={contributor?.content?.artistname}> {contributor?.content?.artistname}{index === (metadata?.contributors.length - 1) ? "" : " | "}</span>
+                                    <span className="text-sm" key={contributor?.content?.title}> {contributor?.content?.title}{index === (metadata?.contributors.length - 1) ? "" : " | "}</span>
                                 )
                             })
                         }
@@ -189,10 +191,10 @@ ProjectPost.getLayout = function getLayout(page) {
 }
 
 export async function getStaticPaths() {
-    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const response = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",
@@ -224,10 +226,10 @@ export async function getStaticProps(context) {
     const {params} = context;
 
     //GET ALL PROJECTS' DATA
-    const projectsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",
@@ -257,10 +259,10 @@ export async function getStaticProps(context) {
     );
 
     //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const artistsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -284,10 +286,10 @@ export async function getStaticProps(context) {
     let artistsListData = artistsJsonData.result.data
 
     //GET ALL CATEGORIES' DATA
-    const categoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const categoriesResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",

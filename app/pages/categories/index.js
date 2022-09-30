@@ -1,5 +1,7 @@
 import Head from "next/head";
 
+import styles from '../../styles/Image.module.scss'
+
 // Components
 import DefaultLayout from '../../components/layouts/DefaultLayout'
 import Link from "next/link";
@@ -21,7 +23,7 @@ export default function CategoryList({ content }) {
                         href={`/categories${categorySLUG}`}
                     >
                         <a 
-                            className="inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer" 
+                            className={`${styles['image-container']} inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer`} 
                             style={{ paddingBottom: '65%' }}
                         >
                             <Image 
@@ -49,10 +51,10 @@ CategoryList.getLayout = function getLayout(page) {
 
 
 export async function getStaticProps() {
-    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const response = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",

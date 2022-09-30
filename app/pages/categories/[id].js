@@ -6,17 +6,17 @@ import SideNav from "../../components/SideNav";
 import ProjectsList from '../../components/ProjectsList'
 
 export default function CategoryDetail({ content, categories, artists, projects }) {
-    // console.log(content, projects)
+    // console.log(content, categories, projects)
     return (
         <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
             <Head>
-                <title>DIRTY SNOW | {content.content.categoryname.toUpperCase()}</title>
+                <title>DIRTY SNOW | {content.content.title.toUpperCase()}</title>
             </Head>
 
             <SideNav 
                 categories={categories} 
                 artists={artists} 
-                selectedPage={content?.content?.categoryname}
+                selectedPage={content?.content?.title}
             />
 
             <div className="col-span-9">
@@ -39,10 +39,10 @@ CategoryDetail.getLayout = function getLayout(page) {
 }
 
 export async function getStaticPaths() {
-    const response = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const response = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -74,10 +74,10 @@ export async function getStaticProps(context) {
     const {params} = context;
 
     //GET ALL CATEGORIES' DATA
-    const categoriesResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const categoriesResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('categories').children",
@@ -105,10 +105,10 @@ export async function getStaticProps(context) {
     )[0];
 
     //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const artistsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('artists').children",
@@ -130,10 +130,10 @@ export async function getStaticProps(context) {
     let artistsListData = artistsJsonData.result.data
 
     //GET ALL PROJECTS' DATA
-    const projectsResponse = await fetch("http://dirty-snow-panel.local.com:8888/api/query", {
+    const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
         headers: {
-            Authorization: `Basic ${Buffer.from(`mitchell@cold-rice.info:dirtysnow`).toString("base64")}`,
+            Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
             query: "page('projects').children",

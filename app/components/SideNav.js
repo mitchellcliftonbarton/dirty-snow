@@ -19,9 +19,9 @@ export default function SideNav({categories, artists, selectedPage}) {
                                 href={`/categories${categorySLUG}`}
                             >
                                 <a
-                                    className={`cursor-pointer uppercase w-fit lg:hover:underline lg:hover:italic ${selectedPage === category?.content?.categoryname ? 'underline italic' : ''}`}
+                                    className={`cursor-pointer uppercase w-fit lg:hover:underline lg:hover:italic ${selectedPage === category?.content?.title ? 'underline italic' : ''}`}
                                 >
-                                    {category?.content?.categoryname}
+                                    {category?.content?.title}
                                 </a>
                             </Link>
                         )
@@ -34,7 +34,7 @@ export default function SideNav({categories, artists, selectedPage}) {
                         const artistSLUG = artist?.url.slice(artist?.url.lastIndexOf("/"))
                         return (
                             <Link key={artistSLUG} href={`/artists${artistSLUG}`}>
-                                <a className={`cursor-pointer w-fit lg:hover:underline lg:hover:italic ${selectedPage === artist?.content?.artistname ? 'underline italic' : ''}`}>{artist?.content?.artistname}</a>
+                                <a className={`cursor-pointer w-fit lg:hover:underline lg:hover:italic ${selectedPage === artist?.content?.title ? 'underline italic' : ''}`}>{artist?.content?.title}</a>
                             </Link>
                         )
                     })
