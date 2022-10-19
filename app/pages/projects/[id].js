@@ -15,8 +15,13 @@ import "swiper/css/navigation";
 import {useCallback, useRef, useState} from "react";
 import GridImage from "../../components/GridImage";
 
-export default function ProjectPost({content, categories, artists, metadata}) {
+export default function ProjectPost({content, categories, artists, metadata, studiocategories}) {
+    let isLargeQuery = true
+    console.log(content)
 
+    if (typeof window !== "undefined") {
+        isLargeQuery = window.matchMedia("(min-width: 992px)").matches
+    }
     const sliderRef = useRef(null);
 
     const handlePrev = useCallback(() => {
@@ -67,22 +72,24 @@ export default function ProjectPost({content, categories, artists, metadata}) {
     const [gridImages, setGridImages] = useState(images)
     
     const setImage = (index, value) => {
-        images.forEach(image => {
-            image.expanded = false
-            image.zIndexVal = 1
-        })
-        images[index].expanded = value
-        images[index].zIndexVal = 10
+        if (isLargeQuery) {
+            images.forEach(image => {
+                image.expanded = false
+                image.zIndexVal = 1
+            })
+            images[index].expanded = value
+            images[index].zIndexVal = 10
 
-        setGridImages([...images]) // have to spread it in so its passing in a new array, otherwise state wont update UI
+            setGridImages([...images]) // have to spread it in so its passing in a new array, otherwise state wont update UI
+        }
     }
 
     function renderImages() {
         switch (content?.content?.projectlayout) {
             case "Grid":
                 return (
-                    //TODO BUILD ACTUAL GRID LAYOUT WITH EXPANDABLE IMAGES
-                    <div className="grid grid-cols-5 gap-1 pr-20">
+                    // TODO BUILD ACTUAL GRID LAYOUT WITH EXPANDABLE IMAGES
+                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-def lg:gap-1 pr-def lg:pr-20">
                         {gridImages?.map((image, index) => {
                             return (
                                 <GridImage image={image} setImage={setImage} index={index} key={index} alt={`Image from ${content.content.title}`} />
@@ -93,7 +100,29 @@ export default function ProjectPost({content, categories, artists, metadata}) {
             case "Carousel":
                 return (
                     <>
-                        <div className="flex justify-center w-full">
+                        <div className="flex lg:hidden flex-wrap pr-def">
+                            {content?.images?.map((image, index) => {
+                                return (
+                                    <div className="w-full mb-def" key={index}>
+                                        {image.type === 'video' ? (
+                                            <video src={image.url} controls preload className="w-full"></video>
+                                        ) : (
+                                            <Image
+                                                src={image.url}
+                                                key={index}
+                                                width={image.width}
+                                                height={image.height}
+                                                alt={`Image from ${content.content.title}`}
+                                                priority={index < 2 ? true : false}
+                                                layout="responsive"
+                                            />
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
+
+                        <div className="hidden lg:flex justify-center w-full">
                             <div className="w-full relative" style={{ paddingBottom: '45%' }}>
                                 <div className="absolute top-0 left-0 w-full h-full">
                                     <Swiper
@@ -111,16 +140,23 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                                     >
                                         {content?.images?.map((image, index) => {
                                             return (
-                                                <SwiperSlide className="" key={index}>
-                                                    <div className={`${styles['image-container']} flex h-full w-full items-center`}>
-                                                        <Image 
-                                                            src={image.url}
-                                                            className="max-h-full max-w-full"
-                                                            width={image.width}
-                                                            height={image.height}
-                                                            alt={`Image from ${content.content.title}`}
-                                                            priority={index < 2 ? true : false}
-                                                        />
+                                                <SwiperSlide key={index}>
+                                                    <div className={`${styles['image-container']} absolute top-0 left-0 h-full w-full`}>
+                                                        {image.type === 'video' ? (
+                                                            <div className="absolute top-0 left-0 w-full h-full">
+                                                                <video src={image.url} controls preload className="object-contain object-center w-full h-full"></video>
+                                                            </div>
+                                                        ) : (
+                                                            <Image 
+                                                                src={image.url}
+                                                                width={image.width}
+                                                                height={image.height}
+                                                                alt={`Image from ${content.content.title}`}
+                                                                priority={index < 2 ? true : false}
+                                                                objectFit="contain"
+                                                                layout="fill"
+                                                            />
+                                                        )}
                                                     </div>
                                                 </SwiperSlide>)
                                         })}
@@ -129,7 +165,7 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                             </div>
                         </div>
 
-                        <div className="flex justify-between mt-4">
+                        <div className="hidden lg:flex justify-between mt-4">
                             <div onClick={handlePrev} className="p-2 cursor-pointer">
                                 <svg width="165" height="14" viewBox="0 0 165 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0 7L5 9.88675L5 4.11325L0 7ZM4.5 7.5L165 7.50001L165 6.50001L4.5 6.5L4.5 7.5Z" fill="black"/>
@@ -158,9 +194,10 @@ export default function ProjectPost({content, categories, artists, metadata}) {
                 categories={categories} 
                 artists={artists} 
                 selectedPage={content?.content?.title}
+                studioCategories={studiocategories}
             />
 
-            <div className="col-span-9">
+            <div className="col-span-12 lg:col-span-9">
                 <div id="project-main">
                     <div className="border-b border-black pb-2 mr-def">
                         <span className="text-3xl">{content?.content?.title} </span>
@@ -237,13 +274,14 @@ export async function getStaticProps(context) {
                 url: true,
                 content: true,
                 images: {
-                    query: "page.images",
+                    query: "page.projectImages.toFiles",
                     select: {
                         url: true,
                         filename: true,
                         content: true,
                         width: true,
-                        height: true
+                        height: true,
+                        type: true
                     },
                 },
             },
@@ -284,6 +322,31 @@ export async function getStaticProps(context) {
     });
     const artistsJsonData = await artistsResponse.json()
     let artistsListData = artistsJsonData.result.data
+
+    //GET ALL STUDIO' DATA
+    const studioResponse = await fetch(process.env.API_HOST, {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${process.env.AUTH}`,
+        },
+        body: JSON.stringify({
+            query: "page('studiocategories').children",
+            select: {
+                url: true,
+                content: true,
+                images: {
+                    query: "page.images",
+                    select: {
+                        url: true,
+                        filename: true,
+                        content: true,
+                    },
+                },
+            },
+        }),
+    });
+    const studioJsonData = await studioResponse.json()
+    let studioListData = studioJsonData.result.data
 
     //GET ALL CATEGORIES' DATA
     const categoriesResponse = await fetch(process.env.API_HOST, {
@@ -334,7 +397,8 @@ export async function getStaticProps(context) {
             content: pageContent,
             categories: categoryListData,
             artists: artistsListData,
-            metadata: projectContent
+            metadata: projectContent,
+            studiocategories: studioListData
         },
     };
 }

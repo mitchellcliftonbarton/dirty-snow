@@ -8,7 +8,7 @@ import Image from 'next/image'
 const GridImage = ({ image, setImage, index, alt }) => {
   return (
     <div 
-      className="col-span-1 relative cursor-pointer" 
+      className="col-span-2 lg:col-span-1 relative cursor-pointer" 
       style={{ paddingBottom: '133%' }}
       onClick={() => setImage(index, !image.expanded)}
     >

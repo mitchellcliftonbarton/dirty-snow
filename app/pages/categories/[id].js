@@ -5,7 +5,7 @@ import DefaultLayout from '../../components/layouts/DefaultLayout'
 import SideNav from "../../components/SideNav";
 import ProjectsList from '../../components/ProjectsList'
 
-export default function CategoryDetail({ content, categories, artists, projects }) {
+export default function CategoryDetail({ content, categories, artists, projects, studiocategories }) {
     // console.log(content, categories, projects)
     return (
         <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
@@ -17,9 +17,10 @@ export default function CategoryDetail({ content, categories, artists, projects 
                 categories={categories} 
                 artists={artists} 
                 selectedPage={content?.content?.title}
+                studioCategories={studiocategories}
             />
 
-            <div className="col-span-9">
+            <div className="col-span-12 lg:col-span-9">
                 {projects.length > 0 ? (
                     <ProjectsList projects={projects} />
                 ) : (
@@ -129,6 +130,32 @@ export async function getStaticProps(context) {
     const artistsJsonData = await artistsResponse.json()
     let artistsListData = artistsJsonData.result.data
 
+
+    //GET ALL STUDIO' DATA
+    const studioResponse = await fetch(process.env.API_HOST, {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${process.env.AUTH}`,
+        },
+        body: JSON.stringify({
+            query: "page('studiocategories').children",
+            select: {
+                url: true,
+                content: true,
+                images: {
+                    query: "page.images",
+                    select: {
+                        url: true,
+                        filename: true,
+                        content: true,
+                    },
+                },
+            },
+        }),
+    });
+    const studioJsonData = await studioResponse.json()
+    let studioListData = studioJsonData.result.data
+
     //GET ALL PROJECTS' DATA
     const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
@@ -192,6 +219,7 @@ export async function getStaticProps(context) {
             content: pageContent,
             categories: categoryListData,
             artists: artistsListData,
+            studiocategories: studioListData,
             projects: pageProjects
         },
     };

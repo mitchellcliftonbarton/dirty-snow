@@ -15,7 +15,7 @@ export default function ProjectsList({projects}) {
         if (index % 3 === 0) {
           return (
             <Link href={`/projects${projectSLUG}`} key={index}>
-              <a className="w-full mb-32 pr-40 lg:hover:opacity-50 transition-opacity duration-300">
+              <a className="w-full mb-20 lg:mb-32 lg:pr-40 lg:hover:opacity-70 transition-opacity duration-300">
                 <div className="flex items-end mb-3">
                   <h2 className="text-3xl whitespace-nowrap uppercase">{project?.project?.content?.title}</h2>
                   <span className="ml-6">
@@ -51,7 +51,7 @@ export default function ProjectsList({projects}) {
         } else {
           return (
             <Link href={`/projects${projectSLUG}`} key={index}>
-              <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+              <a className="w-full lg:w-1/2 mb-20 lg:mb-32 lg:pr-20 lg:hover:opacity-70 transition-opacity duration-300">
                 <div className="flex items-end mb-3">
                   <h2 className="text-3xl whitespace-nowrap uppercase">{project?.project?.content?.title}</h2>
                   <span className="ml-6">

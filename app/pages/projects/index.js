@@ -23,7 +23,7 @@ export default function ProjectsList({ content }) {
                         href={`/projects${projectSLUG}`}
                     >
                         <a 
-                            className={`${styles['image-container']} inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer`} 
+                            className={`${styles['image-container']} inner relative lg:hover:opacity-70 transition-opacity duration-300 cursor-pointer`} 
                             style={{ paddingBottom: '65%' }}
                         >
                             <Image 

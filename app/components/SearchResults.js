@@ -17,9 +17,10 @@ export default function ProjectsList({results}) {
                 href={`/projects${result.slug}`} 
                 key={index}
               >
-                <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+                <a className="w-full lg:w-1/2 mb-20 lg:mb-32 lg:pr-20 lg:hover:opacity-70 transition-opacity duration-300">
                   <div className="flex items-end mb-3">
                     <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                    <span className='ml-2'>| PROJECT</span>
                   </div>
 
                   <div className="relative">
@@ -48,9 +49,36 @@ export default function ProjectsList({results}) {
                 href={`/categories${result.slug}`} 
                 key={index}
               >
-                <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+                <a className="w-full lg:w-1/2 mb-20 lg:mb-32 lg:pr-20 lg:hover:opacity-70 transition-opacity duration-300">
                   <div className="flex items-end mb-3">
                     <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                    <span className='ml-2'>| DS</span>
+                  </div>
+
+                  <div className="relative">
+                    <div className={`${imageStyles['image-container']} image relative border border-black`} style={{ paddingBottom: '65%' }}>
+                      <Image 
+                        src={result.image}
+                        layout="fill"
+                        objectFit='cover'
+                        alt={`Image for ${result.title}`}
+                        priority={index < 3 ? true : false}
+                      />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+            )
+          case 'studiocategory':
+            return (
+              <Link 
+                href={`/ds-studio${result.slug}`} 
+                key={index}
+              >
+                <a className="w-full lg:w-1/2 mb-20 lg:mb-32 lg:pr-20 lg:hover:opacity-70 transition-opacity duration-300">
+                  <div className="flex items-end mb-3">
+                    <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                    <span className='ml-2'>| DS STUDIO</span>
                   </div>
 
                   <div className="relative">
@@ -73,9 +101,10 @@ export default function ProjectsList({results}) {
                 href={`/artists${result.slug}`} 
                 key={index}
               >
-                <a className="w-full lg:w-1/2 mb-32 pr-20 lg:hover:opacity-50 transition-opacity duration-300">
+                <a className="w-full lg:w-1/2 mb-20 lg:mb-32 lg:pr-20 lg:hover:opacity-70 transition-opacity duration-300">
                   <div className="flex items-end mb-3">
                     <h2 className="text-3xl whitespace-nowrap uppercase">{result.title}</h2>
+                    <span className='ml-2'>| ARTIST</span>
                   </div>
 
                   <div className="relative">

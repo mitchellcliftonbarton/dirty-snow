@@ -7,34 +7,32 @@ import DefaultLayout from '../../components/layouts/DefaultLayout'
 import Link from "next/link";
 import Image from 'next/image'
 
-export default function ArtistList({ content }) {
+export default function CategoryList({ content }) {
     return (
         <div className="py-32 px-def grid grid-cols-5 gap-def-1/2 w-full">
             <Head>
-                <title>DIRTY SNOW | ARTISTS</title>
+                <title>DIRTY SNOW | DS STUDIO</title>
             </Head>
 
-            {content.map(artist => {
-                const artistSLUG = artist?.url.slice(artist?.url.lastIndexOf("/"))
+            {content.map(category => {
+                const categorySLUG = category?.url.slice(category?.url.lastIndexOf("/"))
 
                 return (
                     <Link 
-                        key={artistSLUG} 
-                        href={`/artists${artistSLUG}`}
+                        key={categorySLUG} 
+                        href={`/categories${categorySLUG}`}
                     >
                         <a 
                             className={`${styles['image-container']} inner relative lg:hover:opacity-70 transition-opacity duration-300 cursor-pointer`} 
                             style={{ paddingBottom: '65%' }}
                         >
-                            {artist?.images[0]?.url && (
-                                <Image 
-                                    src={artist?.images[0]?.url}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    alt={`Image of ${artist.content.title}`}
-                                    priority
-                                />
-                            )}
+                            <Image 
+                                src={category?.images[0]?.url}
+                                layout="fill"
+                                objectFit="cover"
+                                alt={`Image of ${category.content.title}`}
+                                priority
+                            />
                         </a>
                     </Link>
                 )
@@ -43,7 +41,7 @@ export default function ArtistList({ content }) {
     );
 }
 
-ArtistList.getLayout = function getLayout(page) {
+CategoryList.getLayout = function getLayout(page) {
   return (
     <DefaultLayout>
       {page}
@@ -59,7 +57,7 @@ export async function getStaticProps() {
             Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
-            query: "page('artists').children",
+            query: "page('studiocategories').children",
             select: {
                 url: true,
                 content: true,

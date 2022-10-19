@@ -12,7 +12,7 @@ export default function HomePage({content}) {
     const { activeHomeCategoryData } = content
 
     return (
-        <div className="py-32 px-def grid grid-cols-5 gap-def-1/2 w-full">
+        <div className="py-20 lg:py-32 px-def grid grid-cols-1 lg:grid-cols-5 gap-def lg:gap-def-1/2 w-full">
             <Head>
                 <title>DIRTY SNOW | Home</title>
             </Head>
@@ -26,7 +26,7 @@ export default function HomePage({content}) {
                         href={`/categories${categorySLUG}`}
                     >
                         <a 
-                            className={`${styles['image-container']} inner relative lg:hover:opacity-50 transition-opacity duration-300 cursor-pointer`} 
+                            className={`${styles['image-container']} inner relative lg:hover:opacity-70 transition-opacity duration-300 cursor-pointer col-span-1`} 
                             style={{ paddingBottom: '65%' }}
                         >
                             <Image

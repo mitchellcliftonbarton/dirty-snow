@@ -21,4 +21,12 @@ a {
     p {
         margin-bottom: 1.5rem;
     }
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }

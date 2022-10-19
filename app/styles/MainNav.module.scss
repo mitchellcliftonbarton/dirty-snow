@@ -1,7 +1,12 @@
+.nav {
+  z-index: 500;
+}
+
 .search {
   border: 0;
   outline: none;
   box-shadow: none;
+  background-color: transparent;
   
   &::placeholder {
     color: black;
@@ -36,4 +41,13 @@
 .bottom-right {
   bottom: 0px;
   right: 0px;
+}
+
+.mobile-menu {
+  z-index: 400;
+  display: none;
+
+  &.active {
+    display: flex;
+  }
 }

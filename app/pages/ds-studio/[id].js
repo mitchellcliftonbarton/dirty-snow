@@ -5,7 +5,7 @@ import DefaultLayout from '../../components/layouts/DefaultLayout'
 import SideNav from "../../components/SideNav";
 import ProjectsList from '../../components/ProjectsList'
 
-export default function ArtistDetail({ content, categories, artists, projects, studiocategories }) {
+export default function CategoryDetail({ content, categories, artists, projects, studiocategories }) {
     return (
         <div className="pt-20 pb-32 grid grid-cols-12 gap-def px-def">
             <Head>
@@ -23,14 +23,14 @@ export default function ArtistDetail({ content, categories, artists, projects, s
                 {projects.length > 0 ? (
                     <ProjectsList projects={projects} />
                 ) : (
-                    <p>There are no projects by this artist.</p>
+                    <p>There are no projects in this category.</p>
                 )}
             </div>
         </div>
     );
 }
 
-ArtistDetail.getLayout = function getLayout(page) {
+CategoryDetail.getLayout = function getLayout(page) {
   return (
     <DefaultLayout>
       {page}
@@ -45,14 +45,13 @@ export async function getStaticPaths() {
             Authorization: `Basic ${process.env.AUTH}`,
         },
         body: JSON.stringify({
-            query: "page('artists').children",
+            query: "page('studiocategories').children",
             select: {
                 title: true,
                 url: true
             },
         }),
     });
-
     const jsonData = await response.json();
     const pageData = jsonData.result.data;
 
@@ -72,38 +71,9 @@ export async function getStaticPaths() {
 
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps(context) {
-    const {params} = context;
-
-    //GET ALL ARTISTS' DATA
-    const artistsResponse = await fetch(process.env.API_HOST, {
-        method: "POST",
-        headers: {
-            Authorization: `Basic ${process.env.AUTH}`,
-        },
-        body: JSON.stringify({
-            query: "page('artists').children",
-            select: {
-                url: true,
-                content: true,
-                images: {
-                    query: "page.images",
-                    select: {
-                        url: true,
-                        filename: true,
-                        content: true,
-                    },
-                },
-            },
-        }),
-    });
-    const artistsJsonData = await artistsResponse.json();
-    let artistsListData = artistsJsonData.result.data
-
-    //FILTER FOR THE SPECIFIC PAGE ARTIST
-    const pageContent = artistsListData.filter((page) => {
-            return page.url.slice(page.url.lastIndexOf('/') + 1) === params.id
-        }
-    )[0];
+    const { params } = context;
+    
+    // console.log(params)
 
     //GET ALL CATEGORIES' DATA
     const categoriesResponse = await fetch(process.env.API_HOST, {
@@ -129,6 +99,31 @@ export async function getStaticProps(context) {
     });
     const categoriesJsonData = await categoriesResponse.json()
     const categoryListData = categoriesJsonData.result.data
+
+    //GET ALL ARTISTS' DATA
+    const artistsResponse = await fetch(process.env.API_HOST, {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${process.env.AUTH}`,
+        },
+        body: JSON.stringify({
+            query: "page('artists').children",
+            select: {
+                url: true,
+                content: true,
+                images: {
+                    query: "page.images",
+                    select: {
+                        url: true,
+                        filename: true,
+                        content: true,
+                    },
+                },
+            },
+        }),
+    });
+    const artistsJsonData = await artistsResponse.json()
+    let artistsListData = artistsJsonData.result.data
 
 
     //GET ALL STUDIO' DATA
@@ -156,6 +151,12 @@ export async function getStaticProps(context) {
     const studioJsonData = await studioResponse.json()
     let studioListData = studioJsonData.result.data
 
+    //FILTER AND FIND THE SPECIFIC PAGE CATEGORY DATA
+    let pageContent = studioListData.filter((page) => {
+            return page.url.slice(page.url.lastIndexOf('/') + 1) === params.id
+        }
+    )[0];
+
     //GET ALL PROJECTS' DATA
     const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
@@ -179,12 +180,20 @@ export async function getStaticProps(context) {
         }),
     });
     const projectsJsonData = await projectsResponse.json()
-    let projectsListData = projectsJsonData.result.data
+  let projectsListData = projectsJsonData.result.data
+  
+//   console.log(projectsListData)
 
-    //FILTER PROJECTS BY SPECIFIC PAGE ARTIST
+    //FILTER PROJECTS BY SPECIFIC PAGE CATEGORY
     let pageProjects = projectsListData?.filter(project => {
-        const projectArtists = project?.content?.projectartists?.split(",").map(artist => artist.slice(artist?.lastIndexOf("/") + 1))
-        return projectArtists.includes(params.id)
+        const studioCategories = project?.content?.studiocategories?.split(",").map(category => category.slice(category?.lastIndexOf("/") + 1))
+        // console.log('------')
+        // console.log(projectCategories, params.id)
+        if (studioCategories) {
+          return studioCategories.includes(params.id)
+        } else {
+          return false
+        }
     })
 
     //GET METADATA FOR EACH PROJECT
@@ -217,8 +226,8 @@ export async function getStaticProps(context) {
             content: pageContent,
             categories: categoryListData,
             artists: artistsListData,
-            projects: pageProjects,
             studiocategories: studioListData,
+            projects: pageProjects
         },
     };
 }

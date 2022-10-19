@@ -1,4 +1,13 @@
 .inner {
-  position: sticky;
-  top: 5rem;
+  display: none;
+
+  @media screen and (min-width: theme("screens.lg")) {
+    position: sticky;
+    top: 5rem;
+    display: flex;
+  }
+
+  &.open {
+    display: flex;
+  }
 }

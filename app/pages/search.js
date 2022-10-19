@@ -8,12 +8,13 @@ import DefaultLayout from '../components/layouts/DefaultLayout'
 import SearchResults from '../components/SearchResults'
 import SideNav from "../components/SideNav";
 
-export default function SearchPage({ categories, artists, projects, allData }) {
+export default function SearchPage({ categories, artists, projects, allData, studiocategories }) {
   const router = useRouter()
-  const searchTerm = router.query.q
+    const searchTerm = router.query.q
+    const lowerSearchTerm = searchTerm ? searchTerm.toLowerCase() : false
 
   const results = allData.filter(item => {
-    return item.searchableContent.includes(searchTerm)
+    return item.searchableContent.includes(lowerSearchTerm)
   })
 
   return (
@@ -26,10 +27,11 @@ export default function SearchPage({ categories, artists, projects, allData }) {
               categories={categories} 
               artists={artists} 
               selectedPage={false}
+              studioCategories={studiocategories}
           />
       
-          <div className="col-span-9">
-              <h2 className="mb-12">Search results for &ldquo;{searchTerm}&rdquo;</h2>
+          <div className="col-span-12 lg:col-span-9">
+              <h2 className="mb-3 lg:mb-12">Search results for &ldquo;{searchTerm}&rdquo;</h2>
               {results.length > 0 ? (
                   <SearchResults results={results} />
               ) : (
@@ -51,8 +53,6 @@ SearchPage.getLayout = function getLayout(page) {
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps(context) {
     const { params } = context;
-  
-    // console.log(params)
   
     //GET ALL CATEGORIES' DATA
     const categoriesResponse = await fetch(process.env.API_HOST, {
@@ -104,6 +104,32 @@ export async function getStaticProps(context) {
     const artistsJsonData = await artistsResponse.json()
     let artistsListData = artistsJsonData.result.data
 
+
+    //GET ALL STUDIO' DATA
+    const studioResponse = await fetch(process.env.API_HOST, {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${process.env.AUTH}`,
+        },
+        body: JSON.stringify({
+            query: "page('studiocategories').children",
+            select: {
+                url: true,
+                content: true,
+                images: {
+                    query: "page.images",
+                    select: {
+                        url: true,
+                        filename: true,
+                        content: true,
+                    },
+                },
+            },
+        }),
+    });
+    const studioJsonData = await studioResponse.json()
+    let studioListData = studioJsonData.result.data
+
     //GET ALL PROJECTS' DATA
     const projectsResponse = await fetch(process.env.API_HOST, {
         method: "POST",
@@ -136,7 +162,7 @@ export async function getStaticProps(context) {
   categoryListData.forEach(category => {
     const obj = {
       title: category.content.title,
-      searchableContent: `${category.content.title} ${category.content.categorydescription} category`,
+      searchableContent: `${category.content.title} ${category.content.categorydescription} category`.toLowerCase(),
       type: 'category',
       slug: category.url.slice(category.url.lastIndexOf("/")),
       image: category.images.length > 0 ? category.images[0].url : false
@@ -144,11 +170,23 @@ export async function getStaticProps(context) {
 
     allData.push(obj)
   })
+    
+    studioListData.forEach(category => {
+        const obj = {
+            title: category.content.title,
+            searchableContent: `${category.content.title} ${category.content.categorydescription} studiocategory`.toLowerCase(),
+            type: 'studiocategory',
+            slug: category.url.slice(category.url.lastIndexOf("/")),
+            image: category.images.length > 0 ? category.images[0].url : false
+        }
+
+        allData.push(obj)
+    })
 
   artistsListData.forEach(artist => {
     const obj = {
       title: artist.content.title,
-      searchableContent: `${artist.content.title} ${artist.content.artistbio} artist`,
+      searchableContent: `${artist.content.title} ${artist.content.artistbio} artist`.toLowerCase(),
       type: 'artist',
       slug: artist.url.slice(artist.url.lastIndexOf("/")),
       image: artist.images.length > 0 ? artist.images[0].url : false
@@ -173,7 +211,7 @@ export async function getStaticProps(context) {
     const obj = {
       title: project.content.title,
       name: project.content.title,
-      searchableContent: `${project.content.title} ${catsString.toLowerCase()} ${artistsString.toLowerCase()}`,
+      searchableContent: `${project.content.title} ${catsString.toLowerCase()} ${artistsString.toLowerCase()}`.toLowerCase(),
       type: 'project',
       slug: project.url.slice(project.url.lastIndexOf("/")),
       image: project.images[0].url ? project.images[0].url : false,
@@ -188,7 +226,8 @@ export async function getStaticProps(context) {
         props: {
             categories: categoryListData,
             artists: artistsListData,
-        projects: projectListData,
+            projects: projectListData,
+            studiocategories: studioListData,
             allData: allData
         },
     };
