@@ -15,9 +15,6 @@ columns:
       category-info:
         type: fields
         fields:
-          categoryName:
-            type: text
-            label: Category Name
           categoryImage:
             type: files
             label: Category Image
@@ -25,6 +22,7 @@ columns:
             image:
               ratio: 16/9
             multiple: false
+            required: true
 
   - width: 1/2
     sections:

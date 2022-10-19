@@ -1,0 +1,19 @@
+title: Contact Page
+
+options:
+  changeStatus: false
+  changeSlug: false
+  changeTemplate: false
+  changeTitle: false
+  create: false
+  delete: false
+  duplicate: false
+
+sections:
+  contact-text:
+    type: fields
+    fields:
+      contactText:
+        label: Contact text
+        type: textarea
+        size: large

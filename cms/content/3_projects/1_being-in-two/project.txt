@@ -1,0 +1,37 @@
+Title: Being in Two
+
+----
+
+Projectlayout: Carousel
+
+----
+
+Projectdate: 2022-09-08
+
+----
+
+Projectdescription: 
+
+----
+
+Projectcategories: categories/photos
+
+----
+
+Projectartists: artists/jess-gouveia
+
+----
+
+Featuredimage:
+
+- >
+  anonymous-gallery-being-in-two-7_tight_web-1.jpg
+
+----
+
+Projectimages:
+
+- look-47.jpg
+- look-46.jpg
+- look-48.jpg
+- look-49.jpg

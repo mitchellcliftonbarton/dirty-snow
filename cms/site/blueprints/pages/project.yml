@@ -27,6 +27,7 @@ columns:
             label: Date
             type: date
             display: MM / YYYY
+            info: This will display as the year chosen
           projectDescription:
             label: Project Description
             type: textarea
@@ -37,12 +38,16 @@ columns:
             type: multiselect
             options: query
             query: site.find("categories").children
+          studioCategories:
+            label: Studio Categories
+            type: multiselect
+            options: query
+            query: site.find("studiocategories").children
           projectArtists:
             label: Artists
             type: multiselect
             options: query
             query: site.find("artists").children
-
 
   - width: 1/2
     sections:
@@ -55,7 +60,10 @@ columns:
             multiple: true
             max: 2
             layout: cards
+            required: true
           projectImages:
             label: Project Images
             type: files
             layout: cards
+            required: true
+            info: .mp4 files can be added here if the project is type 'Carousel'

@@ -2,4 +2,4 @@ Title: Home Page
 
 ----
 
-Featuredcategories: categories/category-1, categories/category-4, categories/category-6, categories/category-9, categories/category-10, categories/category-3, categories/category-2, categories/category-5, categories/category-7, categories/category-8, categories/category-11, categories/category-13, categories/category-12, categories/category-14, categories/category-16, categories/category-15, categories/category-17, categories/category-18, categories/category-19, categories/category-20
+Featuredcategories: categories/brand-adaptation, categories/photos, categories/works-on-canvas, categories/works-on-paper, categories/sculpture, categories/creative-direction, categories/ooh, categories/videos

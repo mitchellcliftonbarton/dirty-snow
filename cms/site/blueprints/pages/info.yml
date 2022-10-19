@@ -16,6 +16,4 @@ sections:
       infoText:
         label: Info text
         type: textarea
-        buttons: false
         size: large
-

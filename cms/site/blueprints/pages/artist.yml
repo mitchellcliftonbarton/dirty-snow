@@ -15,14 +15,12 @@ columns:
       artist-info:
         type: fields
         fields:
-          artistName:
-            type: text
-            label: Artist Name
           artistImage:
             type: files
             label: Artist Image (optional)
             layout: cardlets
             multiple: false
+            required: true
 
   - width: 1/2
     sections:

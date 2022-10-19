@@ -1,0 +1,34 @@
+Title: Supreme x Chito
+
+----
+
+Projectlayout: Carousel
+
+----
+
+Projectdate: 2021-08-13
+
+----
+
+Projectdescription: 
+
+----
+
+Projectcategories: categories/creative-direction
+
+----
+
+Projectartists: artists/chito
+
+----
+
+Featuredimage: - 5.jpg
+
+----
+
+Projectimages:
+
+- behind_the_mask-1.jpg
+- balance-2.jpg
+- >
+  dad_napping_102110_4_1cold_site_jessegouveia2020-1.jpg

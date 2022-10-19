@@ -1,0 +1,55 @@
+Title: Givenchy SS '22
+
+----
+
+Projectlayout: Grid
+
+----
+
+Projectdate: 2022-02-12
+
+----
+
+Projectdescription: With the Givenchy Spring 2022 pre-collection a spirit of bridging worlds — with a runway set amid a Paris train yard — becomes an ideal metaphor for the Creative Director’s first artistic collaboration for Givenchy: a playful, directional dialogue with the Seattle-born, Mexico-based artist Chito for clothes, accessories and RIMOWA suitcases.
+
+----
+
+Projectcategories: categories/brand-adaptation
+
+----
+
+Studiocategories: studiocategories/videos
+
+----
+
+Projectartists: artists/chito
+
+----
+
+Featuredimage: - look-5.jpg
+
+----
+
+Projectimages:
+
+- look-45.jpg
+- look-18.jpg
+- look-47.jpg
+- look-14.jpg
+- look-46.jpg
+- look-48.jpg
+- look-49.jpg
+- look-55.jpg
+- look-57.jpg
+- look-51.jpg
+- look-56.jpg
+- look-50.jpg
+- look-60.jpg
+- look-58-1.jpg
+- look-58.jpg
+- look-60-1.jpg
+- look-59-1.jpg
+- look-59.jpg
+- look-62.jpg
+- look-61.jpg
+- look-63.jpg
