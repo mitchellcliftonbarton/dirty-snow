@@ -1,6 +1,16 @@
 title:
 
 sections:
+  fields:
+    type: fields
+    fields:
+      myWebhookButton:
+        type: button
+        label: Build Site
+        text: Build Site
+        url: https://api.vercel.com/v1/integrations/deploy/prj_YkyzPyQUIYXSO9F7MAk1mkFSM2LO/pyA5rH0MBm
+        theme: positive
+        reload: true # trigger a page refresh on success to display updated data
   pages:
     type: pages
     status: listed
